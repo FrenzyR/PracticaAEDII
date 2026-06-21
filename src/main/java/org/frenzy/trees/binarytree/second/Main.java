@@ -5,9 +5,13 @@ public class Main {
         var tree = new BinaryTree();
 
         tree.add(5);
-        tree.add(7);
         tree.add(3);
+        tree.add(4);
+        tree.add(7);
+        tree.add(10);
+        tree.add(9);
 
-        tree.postOrder();
+
+        System.out.printf("Has element: %d %n", tree.hasElement(4,null));
     }
 }

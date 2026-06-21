@@ -1,13 +1,13 @@
 package org.frenzy.trees.avl;
 
 class Node {
-    int key;
+    int value;
     Node left;
     Node right;
     int height;
 
     Node(int k) {
-        key = k;
+        value = k;
         left = null;
         right = null;
         height = 1;
@@ -19,33 +19,33 @@ class Node {
         return N.height;
     }
 
-    Node rightRotate(Node prevRoot) {
-        Node newRoot = prevRoot.left;
-        Node T2 = newRoot.right;
+    Node rightRotate(Node previousNode) {
+        Node newNode = previousNode.left;
+        Node aux = newNode.right;
 
-        newRoot.right = prevRoot;
-        prevRoot.left = T2;
+        newNode.right = previousNode;
+        previousNode.left = aux;
 
-        prevRoot.height = 1 + Math.max(height(prevRoot.left), height(prevRoot.right));
-        newRoot.height = 1 + Math.max(height(newRoot.left), height(newRoot.right));
+        previousNode.height = 1 + Math.max(height(previousNode.left), height(previousNode.right));
+        newNode.height = 1 + Math.max(height(newNode.left), height(newNode.right));
 
-        return newRoot;
+        return newNode;
     }
 
-    Node leftRotate(Node prevRoot) {
-        Node newRoot = prevRoot.right;
-        Node aux = newRoot.left;
+    Node leftRotate(Node previousNode) {
+        Node newNode = previousNode.right;
+        Node aux = newNode.left;
 
         // Perform rotation
-        newRoot.left = prevRoot;
-        prevRoot.right = aux;
+        newNode.left = previousNode;
+        previousNode.right = aux;
 
         // Update heights
-        prevRoot.height = 1 + Math.max(height(prevRoot.left), height(prevRoot.right));
-        newRoot.height = 1 + Math.max(height(newRoot.left), height(newRoot.right));
+        previousNode.height = 1 + Math.max(height(previousNode.left), height(previousNode.right));
+        newNode.height = 1 + Math.max(height(newNode.left), height(newNode.right));
 
         // Return new root
-        return newRoot;
+        return newNode;
     }
 
     int getBalance(Node N) {
@@ -54,14 +54,14 @@ class Node {
         return height(N.left) - height(N.right);
     }
 
-    Node insert(Node node, int key) {
+    Node insert(Node node, int value) {
         if (node == null)
-            return new Node(key);
+            return new Node(value);
 
-        if (key < node.key)
-            node.left = insert(node.left, key);
-        else if (key > node.key)
-            node.right = insert(node.right, key);
+        if (value < node.value)
+            node.left = insert(node.left, value);
+        else if (value > node.value)
+            node.right = insert(node.right, value);
         else // Equal keys are not allowed in BST
             return node;
 
@@ -70,21 +70,21 @@ class Node {
         int balance = getBalance(node);
 
         // Left Left Case
-        if (balance > 1 && key < node.left.key)
+        if (balance > 1 && value < node.left.value)
             return rightRotate(node);
 
         // Right Right Case
-        if (balance < -1 && key > node.right.key)
+        if (balance < -1 && value > node.right.value)
             return leftRotate(node);
 
         // Left Right Case
-        if (balance > 1 && key > node.left.key) {
+        if (balance > 1 && value > node.left.value) {
             node.left = leftRotate(node.left);
             return rightRotate(node);
         }
 
         // Right Left Case
-        if (balance < -1 && key < node.right.key) {
+        if (balance < -1 && value < node.right.value) {
             node.right = rightRotate(node.right);
             return leftRotate(node);
         }
@@ -94,7 +94,7 @@ class Node {
 
     void preOrder(Node root) {
         if (root != null) {
-            System.out.print(root.key + " ");
+            System.out.print(root.value + " ");
             preOrder(root.left);
             preOrder(root.right);
         }
@@ -103,9 +103,26 @@ class Node {
     void inOrder(Node root) {
         if (root != null) {
             inOrder(root.left);
-            System.out.print(root.key + " ");
+            System.out.print(root.value + " ");
             inOrder(root.right);
         }
     }
 
+    public boolean isComplete(Node node) {
+        if(node.right != null && node.left != null) {
+            var result = isComplete(node.right);
+            if(!result)
+                return false;
+            return isComplete(node.left);
+        }else {
+            if(node.right == null && node.left == null)
+                return true;
+            else
+                return false;
+        }
+    }
+
+    private boolean isLeaf(Node node) {
+        return node.left == null || node.right == null;
+    }
 }
