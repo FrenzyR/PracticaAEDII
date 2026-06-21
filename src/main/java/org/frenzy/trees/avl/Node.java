@@ -34,11 +34,11 @@ class Node {
 
     Node leftRotate(Node prevRoot) {
         Node newRoot = prevRoot.right;
-        Node T2 = newRoot.left;
+        Node aux = newRoot.left;
 
         // Perform rotation
         newRoot.left = prevRoot;
-        prevRoot.right = T2;
+        prevRoot.right = aux;
 
         // Update heights
         prevRoot.height = 1 + Math.max(height(prevRoot.left), height(prevRoot.right));

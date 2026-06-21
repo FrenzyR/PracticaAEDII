@@ -9,14 +9,18 @@ public class Edge<T, E> {
     }
 
     public Vertex<T> getSource() {
+        return null;
     }
 
     public Vertex<T> getTarget() {
+        return null;
     }
 
     public E getLabel() {
+        return null;
     }
 
     public boolean equals(Object o) {
+        return false;
     }
 }
