@@ -108,4 +108,21 @@ class Node {
         }
     }
 
+    public boolean isComplete(Node node) {
+        if(node.right != null && node.left != null) {
+            var result = isComplete(node.right);
+            if(!result)
+                return false;
+            return isComplete(node.left);
+        }else {
+            if(node.right == null && node.left == null)
+                return true;
+            else
+                return false;
+        }
+    }
+
+    private boolean isLeaf(Node node) {
+        return node.left == null || node.right == null;
+    }
 }
